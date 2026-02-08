@@ -1,5 +1,5 @@
 // ----------------------- CONFIG -----------------------
-const DEV_MODE = false; // set false before sending
+const DEV_MODE = true; // set false before sending
 
 // ----------------------- DAYS DATA -----------------------
 const days = [
