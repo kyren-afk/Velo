@@ -4,11 +4,19 @@ const DEV_MODE = false; // set false before sending
 // ----------------------- DAYS DATA -----------------------
 const days = [
   { day: "Rose Day", date: "02-07", text: "🌹Tehrim, if flowers had a queen, they’d bow to you. This rose is just a symbol; my heart already chose you long ago." },
+
+  { day: "Propose Day", date: "02-08", text: "💍Tehrim… I don’t need a special moment to choose you — my heart already did. Today I just say it out loud. I choose you. Always." },
+
   { day: "Chocolate Day", date: "02-09", text: "🍫Some things melt in the mouth… but you? You melt my thoughts, my focus, my entire world." },
+
   { day: "Teddy Day", date: "02-10", text: "🧸If I were a teddy, I’d stay in your arms forever. Safe. Warm. Home." },
+
   { day: "Promise Day", date: "02-11", text: "🤞I promise to choose you no matter what. Even if we are apart, you are the queen of my heart." },
+
   { day: "Hug Day", date: "02-12", text: "🤗If I could hug you right now, my heartbeat would say what words cannot." },
+
   { day: "Kiss Day", date: "02-13", text: "😘One kiss from you could rewrite my whole future. And I’d still ask for another." },
+
   { day: "Valentine’s Day", date: "02-14", text: `
 💍 Tehrim… In a world full of people, my heart only looks for you. Will you be my Valentine? ❤️<br><br>
 <button id="yesBtn">YES 💘</button>
@@ -20,20 +28,15 @@ const days = [
 const container = document.getElementById("daysContainer");
 const cardBox = document.getElementById("cardBox");
 
-// ----------------------- TODAY LOGIC (IST + DATE ONLY) -----------------------
-const now = new Date();
-const ist = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
-
-const todayDateOnly = new Date(ist.getFullYear(), ist.getMonth(), ist.getDate());
+// ----------------------- TODAY LOGIC -----------------------
+const today = new Date();
+const mmdd = String(today.getMonth()+1).padStart(2,'0') + "-" + String(today.getDate()).padStart(2,'0');
 
 days.forEach(d => {
-  const [mm, dd] = d.date.split("-").map(Number);
-  const unlockDate = new Date(ist.getFullYear(), mm - 1, dd);
-
   let btn = document.createElement("button");
   btn.innerText = d.day;
 
-  if (DEV_MODE || todayDateOnly >= unlockDate) {
+  if (DEV_MODE || mmdd >= d.date) {
     btn.onclick = () => showCard(d.text, d.day);
   } else {
     btn.disabled = true;
@@ -45,7 +48,7 @@ days.forEach(d => {
 // ----------------------- SHOW CARD -----------------------
 function showCard(text, dayName) {
   cardBox.innerHTML = `<div class="card">${text}</div>`;
-  if (dayName === "Valentine’s Day") setupValentine();
+  if(dayName === "Valentine’s Day") setupValentine();
 }
 
 // ----------------------- VALENTINE LOGIC -----------------------
@@ -58,7 +61,7 @@ function setupValentine() {
 
   timeBtn.onclick = () => {
     timeClickCount++;
-    const scale = 1 + 0.3 * timeClickCount;
+    const scale = 1 + 0.3*timeClickCount;
     yesBtn.style.transform = `scale(${scale})`;
     yesBtn.style.transition = "transform 0.3s";
 
@@ -67,7 +70,7 @@ function setupValentine() {
     newCard.className = "card";
     newCard.innerText = msg;
     cardBox.appendChild(newCard);
-  };
+  }
 }
 
 // ----------------------- YES CLICKED -----------------------
@@ -94,11 +97,11 @@ function yesClicked() {
 setInterval(() => {
   let heart = document.createElement("span");
   heart.innerText = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.animationDuration = (Math.random()*3+3)+"s";
   document.querySelector(".hearts").appendChild(heart);
-  setTimeout(() => heart.remove(), 6000);
-}, 300);
+  setTimeout(()=>heart.remove(),6000);
+},300);
 
 // ----------------------- MUSIC -----------------------
 const music = document.getElementById("bgMusic");
@@ -125,18 +128,18 @@ seal.onclick = () => {
 // ----------------------- CONFETTI -----------------------
 function launchConfetti() {
   const confettiCount = 150;
-  for (let i = 0; i < confettiCount; i++) {
+  for(let i=0;i<confettiCount;i++){
     let confetti = document.createElement("div");
     confetti.className = "confetti";
-    confetti.style.left = Math.random() * 100 + "vw";
-    confetti.style.backgroundColor = `hsl(${Math.random() * 360},100%,50%)`;
+    confetti.style.left = Math.random()*100 + "vw";
+    confetti.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
     document.body.appendChild(confetti);
 
     confetti.animate([
       { transform: `translateY(0px) rotate(0deg)` },
-      { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)` }
-    ], { duration: 3000 + Math.random() * 2000, iterations: 1, easing: "linear" });
+      { transform: `translateY(100vh) rotate(${Math.random()*360}deg)` }
+    ], { duration: 3000+Math.random()*2000, iterations: 1, easing: "linear" });
 
-    setTimeout(() => confetti.remove(), 5000);
+    setTimeout(()=>confetti.remove(),5000);
   }
 }
