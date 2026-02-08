@@ -20,20 +20,18 @@ const days = [
 const container = document.getElementById("daysContainer");
 const cardBox = document.getElementById("cardBox");
 
-// ----------------------- TODAY LOGIC (IST FIX) -----------------------
+// ----------------------- TODAY LOGIC (IST + REAL DATE) -----------------------
 const now = new Date();
 const ist = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
 
-const mmdd =
-  String(ist.getMonth() + 1).padStart(2, '0') + "-" +
-  String(ist.getDate()).padStart(2, '0');
-
-// ----------------------- BUTTONS -----------------------
 days.forEach(d => {
+  const [mm, dd] = d.date.split("-").map(Number);
+  const unlockDate = new Date(ist.getFullYear(), mm - 1, dd);
+
   let btn = document.createElement("button");
   btn.innerText = d.day;
 
-  if (DEV_MODE || mmdd >= d.date) {
+  if (DEV_MODE || ist >= unlockDate) {
     btn.onclick = () => showCard(d.text, d.day);
   } else {
     btn.disabled = true;
@@ -139,4 +137,4 @@ function launchConfetti() {
 
     setTimeout(() => confetti.remove(), 5000);
   }
-}
+}    
