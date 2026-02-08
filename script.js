@@ -1,5 +1,5 @@
 // ----------------------- CONFIG -----------------------
-const DEV_MODE = true; // set false before sending
+const DEV_MODE = false; // set false before sending
 
 // ----------------------- DAYS DATA -----------------------
 const days = [
@@ -20,10 +20,15 @@ const days = [
 const container = document.getElementById("daysContainer");
 const cardBox = document.getElementById("cardBox");
 
-// ----------------------- TODAY LOGIC -----------------------
-const today = new Date();
-const mmdd = String(today.getMonth()+1).padStart(2,'0') + "-" + String(today.getDate()).padStart(2,'0');
+// ----------------------- TODAY LOGIC (IST FIX) -----------------------
+const now = new Date();
+const ist = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
 
+const mmdd =
+  String(ist.getMonth() + 1).padStart(2, '0') + "-" +
+  String(ist.getDate()).padStart(2, '0');
+
+// ----------------------- BUTTONS -----------------------
 days.forEach(d => {
   let btn = document.createElement("button");
   btn.innerText = d.day;
@@ -40,9 +45,7 @@ days.forEach(d => {
 // ----------------------- SHOW CARD -----------------------
 function showCard(text, dayName) {
   cardBox.innerHTML = `<div class="card">${text}</div>`;
-
-  // Attach Valentine buttons if this is Valentine's Day
-  if(dayName === "Valentine’s Day") setupValentine();
+  if (dayName === "Valentine’s Day") setupValentine();
 }
 
 // ----------------------- VALENTINE LOGIC -----------------------
@@ -55,7 +58,7 @@ function setupValentine() {
 
   timeBtn.onclick = () => {
     timeClickCount++;
-    const scale = 1 + 0.3*timeClickCount;
+    const scale = 1 + 0.3 * timeClickCount;
     yesBtn.style.transform = `scale(${scale})`;
     yesBtn.style.transition = "transform 0.3s";
 
@@ -64,7 +67,7 @@ function setupValentine() {
     newCard.className = "card";
     newCard.innerText = msg;
     cardBox.appendChild(newCard);
-  }
+  };
 }
 
 // ----------------------- YES CLICKED -----------------------
@@ -73,11 +76,10 @@ function yesClicked() {
 
   emailjs.send("service_nhj0osn", "template_hkfdnfl", {
     from_name: "Tehrim",
-    reply_to: "tehrim@example.com",
     message: "She said YES! Kiasat, you are officially her Valentine 💖🔥"
   })
-  .then(() => console.log("Email sent!"))
-  .catch(err => console.error("Email failed", err));
+  .then((response) => console.log("Email sent successfully!", response))
+  .catch(err => console.error("Email failed:", JSON.stringify(err)));
 
   cardBox.innerHTML = `
     <div class="card">
@@ -92,11 +94,11 @@ function yesClicked() {
 setInterval(() => {
   let heart = document.createElement("span");
   heart.innerText = "❤️";
-  heart.style.left = Math.random()*100 + "vw";
-  heart.style.animationDuration = (Math.random()*3+3)+"s";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
   document.querySelector(".hearts").appendChild(heart);
-  setTimeout(()=>heart.remove(),6000);
-},300);
+  setTimeout(() => heart.remove(), 6000);
+}, 300);
 
 // ----------------------- MUSIC -----------------------
 const music = document.getElementById("bgMusic");
@@ -123,18 +125,18 @@ seal.onclick = () => {
 // ----------------------- CONFETTI -----------------------
 function launchConfetti() {
   const confettiCount = 150;
-  for(let i=0;i<confettiCount;i++){
+  for (let i = 0; i < confettiCount; i++) {
     let confetti = document.createElement("div");
     confetti.className = "confetti";
-    confetti.style.left = Math.random()*100 + "vw";
-    confetti.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.backgroundColor = `hsl(${Math.random() * 360},100%,50%)`;
     document.body.appendChild(confetti);
 
     confetti.animate([
       { transform: `translateY(0px) rotate(0deg)` },
-      { transform: `translateY(100vh) rotate(${Math.random()*360}deg)` }
-    ], { duration: 3000+Math.random()*2000, iterations: 1, easing: "linear" });
+      { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)` }
+    ], { duration: 3000 + Math.random() * 2000, iterations: 1, easing: "linear" });
 
-    setTimeout(()=>confetti.remove(),5000);
+    setTimeout(() => confetti.remove(), 5000);
   }
 }
