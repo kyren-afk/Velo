@@ -19,8 +19,8 @@ const days = [
 
   { day: "Valentine’s Day", date: "02-14", text: `
 💍 Tehrim… In a world full of people, my heart only looks for you. Will you be my Valentine? ❤️<br><br>
-<button id="yesBtn">YES 💘</button>
-<button id="timeBtn">I’ll take time 🤍</button>
+<button id="yesBtn">YES ❤️</button>
+<button id="timeBtn">No 💔</button>
 ` }
 ];
 
